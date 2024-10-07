@@ -93,6 +93,39 @@ Lisboa Pulse is built using the microservices approach to ensure scalability and
 
 ---
 
+#### Event Creation Process with Scraping
+
+```mermaid
+sequenceDiagram
+    participant Admin
+    participant DjangoAPI as Django API
+    participant RabbitMQ
+    participant Celery
+    participant FastAPI as Scraper (FastAPI)
+    participant ExternalSite
+    participant PostgreSQL
+
+    Admin ->> DjangoAPI: Add new URL for scraping
+    DjangoAPI ->> PostgreSQL: Store URL in database
+    DjangoAPI ->> RabbitMQ: Send task to scrape URL
+    RabbitMQ ->> Celery: Distribute scraping task
+    Celery ->> FastAPI: Invoke FastAPI to start scraping
+    FastAPI ->> ExternalSite: Fetch event data from the website
+    alt Scraping failure
+        FastAPI -->> Celery: Error Response
+        Celery -->> RabbitMQ: Report error
+        RabbitMQ -->> DjangoAPI: Scraping failed
+        DjangoAPI -->> Admin: Error Response
+    else Scraping success
+        FastAPI -->> Celery: Return scraped data
+        Celery ->> PostgreSQL: Store scraped events in database
+        Celery -->> RabbitMQ: Task completed
+        RabbitMQ -->> DjangoAPI: Scraping succeeded
+        DjangoAPI -->> Admin: Success Response (200)
+    end
+```
+---
+
 ## Future Enhancements
 
 - **Favorite Events**: Allow users to bookmark favorite events and get notifications about them.
