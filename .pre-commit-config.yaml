@@ -16,7 +16,6 @@ repos:
         language: system
         entry: poetry run isort .
         pass_filenames: false
-        cwd: event_management_service
 
   - repo: https://github.com/pycqa/flake8
     rev: 4.0.1
@@ -25,4 +24,3 @@ repos:
         language: system
         entry: poetry run flake8
         pass_filenames: false
-        cwd: event_management_service
