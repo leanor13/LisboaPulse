@@ -1,0 +1,29 @@
+# TODO: add this hook to all microservices, add directories to args
+
+repos:
+  - repo: https://github.com/psf/black
+    rev: 24.10.0
+    hooks:
+      - id: black
+        language: system  # using system so it will run when inside microservices
+        entry: bash -c "cd event_management_service && poetry run black ."
+        pass_filenames: false  # checking whole project
+        cwd: event_management_service
+
+  - repo: https://github.com/pre-commit/mirrors-isort
+    rev: v5.10.1
+    hooks:
+      - id: isort
+        language: system
+        entry: bash -c "cd event_management_service && poetry run isort ."
+        pass_filenames: false
+        cwd: event_management_service
+
+  - repo: https://github.com/pycqa/flake8
+    rev: 4.0.1
+    hooks:
+      - id: flake8
+        language: system
+        entry: bash -c "cd event_management_service && poetry run flake8"
+        pass_filenames: false
+        cwd: event_management_service

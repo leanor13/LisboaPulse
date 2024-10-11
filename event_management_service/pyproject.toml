@@ -4,6 +4,7 @@ version = "0.1.0"
 description = "A microservice for managing events in Lisbon, including event creation, retrieval, updating, and deletion. It serves as the core service for storing and providing event data to other services and users"
 authors = ["Yulia Ioffe <https://github.com/leanor13>"]
 readme = "README.md"
+package-mode = false
 
 [tool.poetry.dependencies]
 python = "^3.12"
@@ -16,6 +17,8 @@ psycopg2-binary = "^2.9.9"
 pytest = "^8.3.3"
 flake8 = "^7.1.1"
 black = "^24.8.0"
+pre-commit = "^4.0.1"
+isort = "^5.13.2"
 
 [build-system]
 requires = ["poetry-core"]
