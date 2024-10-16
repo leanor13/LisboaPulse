@@ -7,6 +7,8 @@ from rest_framework import serializers
 from .models import Event
 
 
+# TODO: check if we need to support different date formats or if we can remove this. Now we have general validation
+#  by DateTimeField format.
 def validate_date(value):
     if isinstance(value, datetime):
         if value < timezone.now():

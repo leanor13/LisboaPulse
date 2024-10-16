@@ -1,3 +1,4 @@
+from django_filters import rest_framework as filters
 from rest_framework import generics, status
 from rest_framework.response import Response
 
@@ -18,3 +19,26 @@ class EventCreateView(generics.CreateAPIView):
         self.perform_create(serializer)
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+class EventFilter(filters.FilterSet):
+    title = filters.CharFilter(lookup_expr="icontains")
+    date = filters.DateFilter()
+    event_type = filters.CharFilter(lookup_expr="iexact")
+    venue = filters.CharFilter(lookup_expr="icontains")
+    added_by = filters.CharFilter(lookup_expr="iexact")
+
+    class Meta:
+        model = Event
+        fields = ["title", "date", "event_type", "venue", "added_by"]
+
+
+# TODO: Add filtering by date. also time, date range etc.
+# TODO: Add pagination
+class EventListView(generics.ListAPIView):
+    queryset = Event.objects.all()
+    serializer_class = EventSerializer
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_class = EventFilter
+    ordering_fields = ["date", "title", "event_type", "venue", "added_by"]
+    ordering = ["date"]
