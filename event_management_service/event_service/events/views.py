@@ -9,18 +9,12 @@ class EventCreateView(generics.CreateAPIView):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
 
+    def perform_create(self, serializer):
+        serializer.save(added_by=self.request.data.get("added_by"))
+
     def create(self, request, *args, **kwargs):
-        # Checking duplicate
-        existing_event = Event.objects.filter(
-            title=request.data.get("title"),
-            date=request.data.get("date"),
-            source=request.data.get("source"),
-        ).first()
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
 
-        if existing_event:
-            return Response(
-                {"detail": "This event already exists."},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-
-        return super().create(request, *args, **kwargs)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)

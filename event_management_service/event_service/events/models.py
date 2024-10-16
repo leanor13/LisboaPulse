@@ -10,11 +10,13 @@ class Event(models.Model):
     address = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
     event_type = models.CharField(max_length=255)
-    source = models.URLField()
+    source = models.CharField(max_length=255)
     comments = models.TextField(blank=True, null=True)
-    # TODO: automatically define who added info
     added_by = models.CharField(
-        max_length=50, choices=[("scraper", "Lisboa Pulse"), ("user", "User")]
+        max_length=50,
+        choices=[("scraper", "Lisboa Pulse"), ("user", "User")],
+        blank=True,
+        null=True,
     )
     created_at = models.DateTimeField(auto_now_add=True)
 
