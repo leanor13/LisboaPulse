@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "scraper-service"
+version = "0.1.0"
+description = ""
+authors = ["Yulia Ioffe <yumioffe@gmail.com>"]
+readme = "README.md"
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.12"
+fastapi = "^0.115.2"
+uvicorn = "^0.32.0"
+celery = ">=5.2.3"
+requests = ">=2.28.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
